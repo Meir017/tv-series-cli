@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { Video } from "../types/index.js";
+import type { Video } from "../types/index.js";
 
 export class InteractiveMenu {
   async selectVideos(videos: Video[]): Promise<Video[]> {
@@ -8,7 +8,12 @@ export class InteractiveMenu {
     }
 
     if (videos.length === 1) {
-      console.log(`Only one video found: ${this.formatRTL(videos[0].title)}`);
+      const firstVideo = videos[0];
+      if (!firstVideo) {
+        throw new Error("No videos available to select");
+      }
+
+      console.log(`Only one video found: ${this.formatRTL(firstVideo.title)}`);
       return videos;
     }
 

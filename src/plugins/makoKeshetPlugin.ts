@@ -1,5 +1,6 @@
 import { load } from "cheerio";
-import { Plugin, ScrapeResult, Video } from "../types/index.js";
+import { Plugin } from "../types/index.js";
+import type { ScrapeResult, Video } from "../types/index.js";
 
 export class MakoKeshetPlugin extends Plugin {
   name = "mako";
@@ -133,7 +134,8 @@ export class MakoKeshetPlugin extends Plugin {
   private extractTitleFromUrl(url: string): string {
     // Extract VOD ID from URL for use as fallback title
     const match = url.match(/VOD-([a-f0-9]+)/);
-    return match ? `Episode (${match[1].substring(0, 8)})` : "Episode";
+    const vodId = match?.[1];
+    return vodId ? `Episode (${vodId.substring(0, 8)})` : "Episode";
   }
 
   getVideoUrlExtractorScript(): string {

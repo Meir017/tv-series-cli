@@ -1,5 +1,6 @@
 import { load } from "cheerio";
-import { Plugin, ScrapeResult, Video } from "../types/index.js";
+import { Plugin } from "../types/index.js";
+import type { ScrapeResult, Video } from "../types/index.js";
 
 export class ThirteenTVPlugin extends Plugin {
   name = "13tv";

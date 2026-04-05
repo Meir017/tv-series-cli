@@ -1,4 +1,4 @@
-import { Plugin, ScrapeResult } from "../types/index.js";
+import type { Plugin, ScrapeResult } from "../types/index.js";
 
 export class PluginManager {
   private plugins: Map<string, Plugin> = new Map();

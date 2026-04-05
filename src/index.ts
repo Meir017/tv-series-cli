@@ -23,12 +23,18 @@ async function main() {
 
   // Simple argument parsing
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--no-prompt" || args[i] === "-n") {
+    const arg = args[i];
+
+    if (!arg) {
+      continue;
+    }
+
+    if (arg === "--no-prompt" || arg === "-n") {
       noPrompt = true;
     } else if (!url) {
-      url = args[i];
+      url = arg;
     } else if (!downloadDir || downloadDir === "./downloads") {
-      downloadDir = args[i];
+      downloadDir = arg;
     }
   }
 

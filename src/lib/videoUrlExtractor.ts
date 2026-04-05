@@ -1,5 +1,5 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { ExtractedVideoUrl } from "../types/index.js";
+import type { ExtractedVideoUrl } from "../types/index.js";
 
 export class VideoUrlExtractor {
   private browser: Browser | null = null;
@@ -66,7 +66,7 @@ export class VideoUrlExtractor {
         try {
           const url = await page.evaluate(() => {
             // Check if the injected script stored the URL in window
-            return (window as any).__extractedVideoUrl || null;
+            return (globalThis as any).__extractedVideoUrl || null;
           });
 
           if (url && !resolved) {
