@@ -196,18 +196,18 @@ bun run --watch src/index.ts "<URL>"
 ## Important Notes
 
 ### Mako/Keshet Bot Detection
-Mako website uses **Radware bot detection**, which blocks automated browser access to prevent scraping. This affects:
+Mako can be sensitive to automated access, but the current Puppeteer-based extraction flow does work in this project. In practice this means:
 
-1. **Landing page scraping** - Bot detection blocks automated HTTP requests
-2. **Browser-based extraction** - Puppeteer/headless browsers are detected and blocked
+1. **Landing page scraping** may still be unreliable if the site changes or blocks requests
+2. **Browser-based extraction** usually works with the current Puppeteer flow
 
 **⚠️ Current Limitation**
-Unfortunately, the script injection approach cannot work with Mako because Radware blocks headless browsers before the video player even loads. The video URL extraction script never gets a chance to run.
+This approach can still break if Mako changes its page structure, request flow, or anti-bot behavior.
 
 **Solution - Manual Workaround**
-1. **Open the series page in your browser** (your real browser, not automation):
+1. **Open the series page in your browser** if automation fails:
    - `https://www.mako.co.il/mako-vod-keshet/the_amazing_race-s2`
-   - Solve any CAPTCHA if prompted
+  - Solve any CAPTCHA if prompted
 
 2. **Find the M3U8 URL using Browser DevTools**:
    - Open DevTools (F12)
@@ -222,16 +222,15 @@ Unfortunately, the script injection approach cannot work with Mako because Radwa
    ```
 
 **Why This Happens**
-- Mako uses **Radware** (advanced bot detection service)
-- Radware blocks headless browsers and automated tools
-- Manual browser access works fine (you're a human)
-- The video streaming URL is loaded dynamically after CAPTCHA verification
+- Mako may use anti-bot protections that vary over time
+- The video streaming URL is loaded dynamically after the page/player initializes
+- If extraction fails, the app falls back to direct download attempts
 
 **Alternatives**
-If you need automation, consider:
+If you need a fallback, consider:
 - Using a real Chrome browser with Puppeteer's `headless: false` option (opens visible window)
 - Manually extracting a few URLs and using them directly
-- Using other Israeli TV sources that don't have strict bot detection (13TV, etc.)
+- Using other Israeli TV sources that are less restrictive (13TV, etc.)
 
 ## License
 
