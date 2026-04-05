@@ -20,6 +20,8 @@ Core flow:
 
 Use Bun for everyday development. Prefer Bun commands over npm/yarn/pnpm.
 
+Commit and push after each change so the remote stays in sync with the local work.
+
 Research Bun behavior in the official docs first: <https://bun.com/docs.md>
 Traverse the documentation website as needed to find the relevant page, examples, and CLI behavior before changing code.
 
