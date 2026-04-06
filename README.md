@@ -24,12 +24,8 @@ This approach **minimizes browser interaction** and **skips unnecessary page loa
 
 ## Prerequisites
 
-- **Bun** (https://bun.sh) - TypeScript runtime
-- **yt-dlp** - For video downloading
-  ```bash
-  pip install yt-dlp
-  ```
-- **FFmpeg** - For video encoding (required by yt-dlp)
+- **Bun** (https://bun.sh) - TypeScript runtime and package manager
+- **FFmpeg** - Required by `yt-dlp` for muxing/merging and HLS downloads
   ```bash
   # macOS
   brew install ffmpeg
@@ -45,6 +41,8 @@ This approach **minimizes browser interaction** and **skips unnecessary page loa
 # Install dependencies
 bun install
 ```
+
+`yt-dlp` does not need to be installed manually. The CLI downloads the latest release on first run and caches it under the active download directory's `.yt-dlp-bin` folder (default: `./downloads/.yt-dlp-bin`).
 
 ## Usage
 
@@ -184,14 +182,19 @@ bun run --watch src/index.ts "<URL>"
 - Some sites may use different video delivery methods
 - Check browser network tab to see what streaming URLs are being used
 
-### "yt-dlp not found" or "ffmpeg not found"
-- Ensure both `yt-dlp` and `ffmpeg` are installed and in your PATH
-- Try: `which yt-dlp` and `which ffmpeg`
+### "ffmpeg not found"
+- Ensure `ffmpeg` is installed and available in your PATH
+- Try: `which ffmpeg` on macOS/Linux or `where ffmpeg` on Windows
 - Install as shown in Prerequisites above
+
+### Bundled yt-dlp download fails
+- The CLI downloads `yt-dlp` automatically on first run, so check network access if that step fails
+- Verify access to the GitHub release API and the `yt-dlp` release assets
+- If you already have a global `yt-dlp` install, you can use it for manual troubleshooting
 
 ### Download fails
 - Some videos may be geo-blocked or require authentication
-- Check if the video URL is directly downloadable: `yt-dlp "<video-url>"`
+- Check if the video URL is directly downloadable with your `yt-dlp` install or the cached binary in the active download directory
 
 ## Important Notes
 
@@ -217,9 +220,11 @@ This approach can still break if Mako changes its page structure, request flow, 
    - Copy the full URL (including query parameters)
 
 3. **Download directly with yt-dlp**:
+  If you have a global `yt-dlp` install, use:
    ```bash
    yt-dlp "https://mako-vod.akamaized.net/i/VOD/...full.m3u8?..." -o "episode.mp4"
    ```
+  Otherwise, run the cached binary from the active download directory's `.yt-dlp-bin` folder.
 
 **Why This Happens**
 - Mako may use anti-bot protections that vary over time
